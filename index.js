@@ -26,6 +26,10 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/store-owner", storeOwnerRoutes);
 
+app.get('/',(req,res)=>{
+  res.send("Server is working");
+})
+
 
 // DB & Server
 mongoose.connect(process.env.MONGODB_URI)
