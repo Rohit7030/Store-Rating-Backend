@@ -16,20 +16,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL, // from .env, e.g., https://store-rating-frontend-wine.vercel.app
-  process.env.FRONTEND_URL?.replace(/\/$/, "") // also allow same origin without trailing slash
-];
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
+    origin: "https://store-rating-frontend.onrender.com", // frontend URL
+    credentials: true, // allow cookies
   })
 );
 
