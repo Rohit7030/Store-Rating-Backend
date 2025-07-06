@@ -22,7 +22,7 @@ export const register = async (req, res) => {
 
     const token = createToken(user);
     res
-      .cookie("jwt", token, { httpOnly: true, secure: false, sameSite: "Lax" })
+      .cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None" })
       .status(201)
       .json({ message: "Registered successfully", user: { name: user.name, role: user.role } });
   } catch (err) {
@@ -42,7 +42,7 @@ export const login = async (req, res) => {
 
     const token = createToken(user);
     res
-      .cookie("jwt", token, { httpOnly: true, secure: false, sameSite: "Lax" })
+      .cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None" })
       .status(200)
       .json({ message: "Login successful", user: { name: user.name, role: user.role } });
   } catch (err) {
