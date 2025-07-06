@@ -22,7 +22,12 @@ export const register = async (req, res) => {
 
     const token = createToken(user);
     res
-      .cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None" })
+      .cookie("jwt", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      })
       .status(201)
       .json({ message: "Registered successfully", user: { name: user.name, role: user.role } });
   } catch (err) {
@@ -42,7 +47,12 @@ export const login = async (req, res) => {
 
     const token = createToken(user);
     res
-      .cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "None" })
+      .cookie("jwt", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      })
       .status(200)
       .json({ message: "Login successful", user: { name: user.name, role: user.role } });
   } catch (err) {
@@ -52,10 +62,14 @@ export const login = async (req, res) => {
 
 // Logout
 export const logout = (req, res) => {
-  res.clearCookie("jwt").json({ message: "Logged out successfully" });
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  }).json({ message: "Logged out successfully" });
 };
 
-
+// Forgot Password
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -66,10 +80,10 @@ export const forgotPassword = async (req, res) => {
   user.otpExpiry = Date.now() + 10 * 60 * 1000; // 10 mins
   await user.save();
 
-  //return OTP in response
   res.status(200).json({ message: "OTP sent", otp });
 };
 
+// Verify OTP
 export const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
   const user = await User.findOne({ email });
@@ -79,6 +93,7 @@ export const verifyOtp = async (req, res) => {
   res.status(200).json({ message: "OTP verified" });
 };
 
+// Reset Password
 export const resetPassword = async (req, res) => {
   const { email, otp, newPassword } = req.body;
   const user = await User.findOne({ email });
