@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "https://store-rating-frontend.onrender.com", // frontend URL
+    origin: "https://store-rating-frontend-wine.vercel.app", // frontend URL
     credentials: true, // allow cookies
   })
 );
